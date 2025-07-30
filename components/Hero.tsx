@@ -1,15 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Play } from "lucide-react";
+
+const buttonVariants: Variants = {
+  hover: {
+    scale: 1.05,
+    boxShadow: "0px 0px 20px rgba(20, 184, 166, 0.5)", // Teal glow
+    transition: { type: "spring" as const, stiffness: 300 },
+  },
+  tap: { scale: 0.98 },
+};
 
 export default function Hero() {
   return (
-    <section className="relative bg-[#0D1B2A] text-white overflow-hidden pt-16">
+    <section className="relative bg-[#0D1B2A] text-white overflow-hidden min-h-screen flex items-center">
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0D1B2A] via-[#0d1b2a]/70 to-[#1A2A3A] opacity-90" />
 
-      <div className="relative container mx-auto px-6 lg:px-16 py-20 lg:py-28 flex flex-col lg:flex-row items-center gap-12">
+      <div className="relative container mx-auto px-6 lg:px-16 flex flex-col lg:flex-row items-center gap-12">
         {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -28,18 +37,24 @@ export default function Hero() {
             From abnormal loads to specialized fleet management — we keep your business moving.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <a
+            <motion.a
               href="/services"
-              className="bg-gradient-to-r from-teal-400 to-green-400 px-6 py-3 rounded-md font-semibold text-[#0D1B2A] hover:opacity-90 transition"
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className="inline-block bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:opacity-90 transition"
             >
               Explore Services
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="/contact"
-              className="border border-teal-400 px-6 py-3 rounded-md font-semibold hover:bg-teal-400 hover:text-[#0D1B2A] transition"
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className="inline-block border border-teal-400 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-teal-400 hover:text-[#0D1B2A] transition"
             >
               Contact Us
-            </a>
+            </motion.a>
           </div>
         </motion.div>
 
@@ -48,42 +63,45 @@ export default function Hero() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="lg:w-1/2 flex justify-center relative"
+          className="lg:w-1/2 flex justify-center relative scale-90 md:scale-100"
         >
           {/* Compass Container */}
-          <div className="relative flex items-center justify-center w-[600px] h-[600px]">
-            {/* Compass Direction Lines */}
+          <div className="relative flex items-center justify-center w-[85vw] max-w-[600px] aspect-square">
+            {/* Compass Lines */}
             <div className="absolute w-[2px] h-full bg-gradient-to-b from-teal-400 via-transparent to-green-400 opacity-70 animate-pulse-glow" />
             <div className="absolute h-[2px] w-full bg-gradient-to-r from-teal-400 via-transparent to-green-400 opacity-70 animate-pulse-glow" />
 
-            {/* Compass Tick Marks */}
-            <span className="absolute top-0 text-white/20 font-semibold text-lg -translate-y-8">N</span>
-            <span className="absolute right-0 text-white/20 font-semibold text-lg translate-x-8">E</span>
-            <span className="absolute bottom-0 text-white/20 font-semibold text-lg translate-y-8">S</span>
-            <span className="absolute left-0 text-white/20 font-semibold text-lg -translate-x-8">W</span>
+            {/* Compass Labels */}
+            <span className="absolute top-0 text-white/20 font-semibold text-sm md:text-lg -translate-y-8">N</span>
+            <span className="absolute right-0 text-white/20 font-semibold text-sm md:text-lg translate-x-8">E</span>
+            <span className="absolute bottom-0 text-white/20 font-semibold text-sm md:text-lg translate-y-8">S</span>
+            <span className="absolute left-0 text-white/20 font-semibold text-sm md:text-lg -translate-x-8">W</span>
 
-            {/* Rotating Compass Rings */}
-            <div className="absolute w-[550px] h-[550px] rounded-full border-2 border-dashed border-teal-400 animate-spin-slow" />
-            <div className="absolute w-[600px] h-[600px] rounded-full border border-green-400/50" />
+            {/* Rotating Rings */}
+            <div className="absolute w-[90%] h-[90%] rounded-full border-2 border-dashed border-teal-400 animate-spin-slow" />
+            <div className="absolute w-full h-full rounded-full border border-green-400/50" />
 
             {/* Gradient Halo */}
             <div className="absolute -inset-12 bg-gradient-to-tr from-teal-400/20 to-green-400/20 rounded-full blur-3xl" />
 
-            {/* Main Circular Image */}
-            <div className="relative w-[490px] h-[490px] rounded-full overflow-hidden shadow-2xl z-10">
+            {/* Main Image */}
+            <div className="relative w-[80%] aspect-square rounded-full overflow-hidden shadow-2xl z-10">
               <img
                 src="/hero-fleet.png"
                 alt="Premier Mobility Fleet"
                 className="w-full h-full object-cover"
               />
-              {/* Radial Glassy Overlay */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent_70%)] pointer-events-none" />
             </div>
 
-            {/* Play Button Overlay */}
-            <button className="absolute z-20 flex items-center justify-center w-20 h-20 bg-white/80 hover:bg-white transition rounded-full shadow-xl">
-              <Play className="w-10 h-10 text-teal-500" />
-            </button>
+            {/* Play Button */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="absolute z-20 flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-white/80 hover:bg-white transition rounded-full shadow-xl"
+            >
+              <Play className="w-8 h-8 md:w-10 md:h-10 text-teal-500" />
+            </motion.button>
           </div>
         </motion.div>
       </div>
