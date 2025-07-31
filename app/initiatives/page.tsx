@@ -1,5 +1,6 @@
 "use client";
 
+import InitiativesPrograms from "@/components/InitiativesPrograms";
 import UniHero from "@/components/UniHero";
 
 export default function InitiativesPage() {
@@ -12,6 +13,7 @@ export default function InitiativesPage() {
         primaryBtn={{ label: "Explore Initiatives", href: "#initiatives-list" }}
         secondaryBtn={{ label: "Contact Us", href: "/contact" }}
       />
+      <InitiativesPrograms />
     </main>
   );
 }

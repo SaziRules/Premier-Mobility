@@ -140,9 +140,9 @@ export default function SecuritySection() {
                 hidden: { opacity: 0, y: 40 },
                 visible: { opacity: 1, y: 0 },
               }}
-              className="flex flex-col bg-white shadow hover:scale-105 transition-transform duration-300"
+              className="flex flex-col bg-white shadow hover:scale-105 transition-transform duration-300 rounded-2xl"
             >
-              <img src={measure.image} alt={measure.title} className="w-full h-48 object-cover" />
+              <img src={measure.image} alt={measure.title} className="w-full h-48 object-cover rounded-t-2xl" />
               <div className="p-4 text-left space-y-2">
                 <h3 className="font-semibold text-lg text-gray-900">{measure.title}</h3>
                 <p className="text-sm text-gray-600">{measure.description}</p>

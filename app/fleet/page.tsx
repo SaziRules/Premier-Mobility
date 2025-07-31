@@ -1,5 +1,7 @@
 "use client";
 
+import FleetOverview from "@/components/FleetOverview";
+import SecuritySection from "@/components/SafetySection";
 import UniHero from "@/components/UniHero";
 
 export default function FleetPage() {
@@ -13,6 +15,8 @@ export default function FleetPage() {
         primaryBtn={{ label: "Explore Fleet Types", href: "#fleet-types" }}
         secondaryBtn={{ label: "Contact Us", href: "/contact" }}
       />
+      <FleetOverview />
+      <SecuritySection />
     </main>
   );
 }

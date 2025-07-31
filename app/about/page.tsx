@@ -1,6 +1,10 @@
 "use client";
 
+import AboutPromo from "@/components/AboutAppPromo";
 import UniHero from "@/components/UniHero";
+import CompanyHistoryAndScope from "@/components/CompanyHistoryAndScope";
+import UnitsAndIndustries from "@/components/UnitsAndIndustries";
+import BusinessApproach from "@/components/BusinessApproach";
 
 export default function AboutPage() {
   return (
@@ -12,6 +16,10 @@ export default function AboutPage() {
         primaryBtn={{ label: "Explore Services", href: "/services" }}
         secondaryBtn={{ label: "Contact Us", href: "/contact" }}
       />
+      <CompanyHistoryAndScope />
+      <AboutPromo />
+      <BusinessApproach />
+      <UnitsAndIndustries />
     </main>
   );
 }

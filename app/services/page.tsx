@@ -1,5 +1,8 @@
 "use client";
 
+import FleetCategories from "@/components/FleetCategories";
+import SafetySection from "@/components/SafetySection";
+import ServicesOverview from "@/components/ServicesOverview";
 import UniHero from "@/components/UniHero";
 
 export default function ServicesPage() {
@@ -12,6 +15,9 @@ export default function ServicesPage() {
         primaryBtn={{ label: "View Business Units", href: "#business-units" }}
         secondaryBtn={{ label: "Contact Us", href: "/contact" }}
       />
+      <ServicesOverview />
+      <FleetCategories />
+      <SafetySection />
     </main>
   );
 }

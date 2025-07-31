@@ -3,12 +3,18 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
+interface ButtonProps {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+}
+
 interface UniHeroProps {
   videoSrc: string;
   title: string;
   subtitle?: string;
-  primaryBtn?: { label: string; href: string };
-  secondaryBtn?: { label: string; href: string };
+  primaryBtn?: ButtonProps;
+  secondaryBtn?: ButtonProps;
   gradientDirection?: "top" | "left" | "right" | "bottom";
   overlayOpacity?: number;
 }
@@ -94,35 +100,53 @@ export default function UniHero({
           )}
 
           <div className="flex flex-col sm:flex-row gap-4">
-            {primaryBtn && (
-              <motion.a
-                href={primaryBtn.href}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0px 0px 20px rgba(20,184,166,0.5)",
-                }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="inline-block bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:opacity-90 transition"
-              >
-                {primaryBtn.label}
-              </motion.a>
-            )}
-            {secondaryBtn && (
-              <motion.a
-                href={secondaryBtn.href}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0px 0px 20px rgba(20,184,166,0.5)",
-                }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="inline-block border border-teal-400 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-teal-400 hover:text-[#0D1B2A] transition"
-              >
-                {secondaryBtn.label}
-              </motion.a>
-            )}
-          </div>
+  {primaryBtn && (
+    primaryBtn.onClick ? (
+      <motion.button
+        type="button"
+        onClick={primaryBtn.onClick}
+        whileHover={{
+          scale: 1.05,
+          boxShadow: "0px 0px 20px rgba(20,184,166,0.5)",
+        }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className="inline-block bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:opacity-90 transition"
+      >
+        {primaryBtn.label}
+      </motion.button>
+    ) : (
+      <motion.a
+        href={primaryBtn.href}
+        whileHover={{
+          scale: 1.05,
+          boxShadow: "0px 0px 20px rgba(20,184,166,0.5)",
+        }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className="inline-block bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:opacity-90 transition"
+      >
+        {primaryBtn.label}
+      </motion.a>
+    )
+  )}
+
+  {secondaryBtn && (
+    <motion.a
+      href={secondaryBtn.href}
+      whileHover={{
+        scale: 1.05,
+        boxShadow: "0px 0px 20px rgba(20,184,166,0.5)",
+      }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      className="inline-block border border-teal-400 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-teal-400 hover:text-[#0D1B2A] transition"
+    >
+      {secondaryBtn.label}
+    </motion.a>
+  )}
+</div>
+
         </motion.div>
       </div>
 
