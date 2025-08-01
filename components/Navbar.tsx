@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Menu, X, Search, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,13 +58,11 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between gap-6">
         {/* Logo */}
-        <a href="/" className="flex items-center">
-          <img
-            src="/logo.png"
-            alt="Premier Mobility Logo"
-            className="h-16 md:h-20 w-auto object-contain"
-          />
-        </a>
+
+<Link href="/" className="flex items-center">
+  <Image src="/logo.png" alt="Premier Mobility Logo" width={160} height={80} />
+</Link>
+
 
         {/* Desktop Nav */}
         <div
