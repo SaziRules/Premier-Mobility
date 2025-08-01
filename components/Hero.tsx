@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { Play, X } from "lucide-react";
+import OnboardingWizard from "@/components/OnboardingWizard"; // import the wizard
 
 const buttonVariants: Variants = {
   hover: {
@@ -14,18 +15,18 @@ const buttonVariants: Variants = {
 };
 
 export default function Hero({
-  title = "Agility + Dependability Delivered - With Premier Mobility",
+  title = "Agility + Dependability Delivered with Premier Mobility",
   subtitle = "Providing innovative transport solutions with over 25 years of experience. From abnormal loads to specialized fleet management — we keep your business moving.",
 }: {
   title?: string;
   subtitle?: string;
 }) {
   const [showVideo, setShowVideo] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   return (
     <>
-      <section className="relative bg-[#0D1B2A] text-white overflow-hidden min-h-screen flex items-center pt-32 md:pt-0">
-
+      <section className="relative bg-[#0D1B2A] text-white overflow-hidden min-h-screen flex items-center z-0">
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0D1B2A] via-[#0d1b2a]/70 to-[#1A2A3A] opacity-90" />
 
@@ -47,22 +48,22 @@ export default function Hero({
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <motion.a
-                href="/services"
+                onClick={() => setShowOnboarding(true)}
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
-                className="inline-block bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:opacity-90 transition"
+                className="inline-block bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] px-6 sm:px-8 py-3 sm:py-4 cursor-pointer rounded-full font-semibold hover:opacity-90 transition"
               >
-                Explore Services
+                Start Onboarding
               </motion.a>
               <motion.a
-                href="/contact"
+                href="/services"
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
                 className="inline-block border border-teal-400 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-teal-400 hover:text-[#0D1B2A] transition"
               >
-                Contact Us
+                Explore Services
               </motion.a>
             </div>
           </motion.div>
@@ -80,10 +81,18 @@ export default function Hero({
               <div className="absolute h-[2px] w-full bg-gradient-to-r from-teal-400 via-transparent to-green-400 opacity-70 animate-pulse-glow" />
 
               {/* Compass Labels */}
-              <span className="absolute top-0 text-white/20 font-semibold text-sm md:text-lg -translate-y-8">N</span>
-              <span className="absolute right-0 text-white/20 font-semibold text-sm md:text-lg translate-x-8">E</span>
-              <span className="absolute bottom-0 text-white/20 font-semibold text-sm md:text-lg translate-y-8">S</span>
-              <span className="absolute left-0 text-white/20 font-semibold text-sm md:text-lg -translate-x-8">W</span>
+              <span className="absolute top-0 text-white/20 font-semibold text-sm md:text-lg -translate-y-8">
+                N
+              </span>
+              <span className="absolute right-0 text-white/20 font-semibold text-sm md:text-lg translate-x-8">
+                E
+              </span>
+              <span className="absolute bottom-0 text-white/20 font-semibold text-sm md:text-lg translate-y-8">
+                S
+              </span>
+              <span className="absolute left-0 text-white/20 font-semibold text-sm md:text-lg -translate-x-8">
+                W
+              </span>
 
               {/* Rotating Rings */}
               <div className="absolute w-[90%] h-[90%] rounded-full border-2 border-dashed border-teal-400 animate-spin-slow" />
@@ -139,6 +148,13 @@ export default function Hero({
               </button>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Onboarding Wizard Modal */}
+      <AnimatePresence>
+        {showOnboarding && (
+          <OnboardingWizard onClose={() => setShowOnboarding(false)} />
         )}
       </AnimatePresence>
     </>

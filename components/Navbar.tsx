@@ -13,6 +13,11 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const pathname = usePathname();
 
+  // Hide navbar for dashboard pages
+  if (pathname.startsWith("/dashboard")) {
+    return null;
+  }
+
   const links = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
@@ -35,13 +40,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-    },
+    show: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
   };
 
   const linkVariants = {
@@ -58,18 +59,14 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-6 lg:px-16 flex items-center justify-between gap-6">
         {/* Logo */}
-
-<Link href="/" className="flex items-center">
-  <Image src="/logo.png" alt="Premier Mobility Logo" width={160} height={80} />
-</Link>
-
+        <Link href="/" className="flex items-center">
+          <Image src="/logo.png" alt="Premier Mobility Logo" width={160} height={80} />
+        </Link>
 
         {/* Desktop Nav */}
         <div
           className={`hidden md:flex flex-grow items-center justify-between h-16 rounded-full pr-2 mt-5 transition-all duration-300 ${
-            visible
-              ? "bg-white/90 backdrop-blur-md shadow-sm"
-              : "bg-white/40 backdrop-blur-lg shadow-md"
+            visible ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-white/40 backdrop-blur-lg shadow-md"
           }`}
         >
           <div className="flex items-center space-x-8 md:pl-8">
@@ -96,10 +93,7 @@ export default function Navbar() {
 
           {/* Search Bar */}
           <motion.div
-            whileHover={{
-              scale: 1.02,
-              boxShadow: "0 0 10px rgba(20,184,166,0.2)",
-            }}
+            whileHover={{ scale: 1.02, boxShadow: "0 0 10px rgba(20,184,166,0.2)" }}
             className="flex items-center border rounded-full shadow-sm px-2 py-2 hover:shadow-md transition cursor-pointer"
           >
             <span className="text-sm text-gray-600 ml-2 mr-4">Where to?</span>
@@ -117,9 +111,7 @@ export default function Navbar() {
         <motion.div
           whileHover={{ scale: 1.05 }}
           className={`hidden md:flex items-center mt-5 justify-center w-16 h-16 rounded-full transition-all duration-300 ${
-            visible
-              ? "bg-white/90 shadow-md"
-              : "bg-white/40 backdrop-blur-lg shadow-md"
+            visible ? "bg-white/90 shadow-md" : "bg-white/40 backdrop-blur-lg shadow-md"
           }`}
         >
           <User className="w-6 h-6 text-gray-700" />
@@ -152,9 +144,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 variants={linkVariants}
                 className={`relative text-2xl font-semibold transition group ${
-                  pathname === link.href
-                    ? "text-black"
-                    : "text-gray-700 hover:text-black"
+                  pathname === link.href ? "text-black" : "text-gray-700 hover:text-black"
                 }`}
               >
                 {link.name}
@@ -166,7 +156,7 @@ export default function Navbar() {
               </motion.a>
             ))}
 
-            {/* Close Button (Full Width Bottom) */}
+            {/* Close Button */}
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsOpen(false)}
