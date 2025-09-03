@@ -16,18 +16,18 @@ const branches: Branch[] = [
   {
     name: "Head Office",
     address:
-      "21 Du Toit Viljoen Road, Willowood Park, Willowton, Pietermaritzburg, 3201",
+      "9 Grix Road, Willowton Industrial, Willowton, Pietermaritzburg, 3201",
     mapUrl:
-      "https://www.google.com/maps?q=21+Du+Toit+Viljoen+Road,+Willowood+Park,+Willowton,+Pietermaritzburg,+3201",
-    phone: "086 100 2477",
-    email: "headoffice@premiermobility.co.za",
+      "https://www.google.com/maps?q=9+Grix+Road,+Willowton+Industrial,+Willowton,+Pietermaritzburg,+3201",
+    phone: "0861 002 477",
+    email: "yussuf@premiergrp.co.za",
   },
   {
     name: "Regional Office - Durban",
-    address: "17 Mayville, Durban, KwaZulu Natal, 4091",
+    address: "17 Buro Cres, Mayville, Durban, KwaZulu Natal, 4091",
     mapUrl:
-      "https://www.google.com/maps?q=17+Mayville,+Durban,+KwaZulu+Natal,+4091",
-    phone: "086 100 2477",
+      "https://www.google.com/maps?q=17+Buro+Cres,+Mayville,+Durban,+KwaZulu+Natal,+4091",
+    phone: "0861 002 477",
     email: "durban@premiermobility.co.za",
   },
   {
@@ -36,7 +36,7 @@ const branches: Branch[] = [
       "CX 48 Industrial Park, 8 Ossewa Street, Chloorkop, Kempton Park, 1624",
     mapUrl:
       "https://www.google.com/maps?q=CX+48+Industrial+Park,+8+Ossewa+Street,+Chloorkop,+Kempton+Park,+1624",
-    phone: "086 100 2477",
+    phone: "0861 002 477",
     email: "kempton@premiermobility.co.za",
   },
 ];

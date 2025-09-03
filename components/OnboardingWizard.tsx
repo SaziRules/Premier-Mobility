@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { X, ArrowRight, ArrowLeft, Building, Phone, User, Mail } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
 
 const steps = [
   {
@@ -34,21 +36,69 @@ const steps = [
 ];
 
 export default function OnboardingWizard({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleNext = () => {
-    if (step < steps.length - 1) setStep(step + 1);
-    else console.log("Final submit", formData);
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const password = Math.random().toString(36).slice(-12);
+
+      // Try creating account
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password,
+      });
+
+      if (signUpError?.message?.includes("already registered")) {
+        // Sign in if already exists
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password,
+        });
+        if (signInError) {
+          setError("This email is already registered. Please log in manually.");
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Insert onboarding record
+      const { error: insertError } = await supabase.from("onboarding").insert([{
+        company: formData.company,
+        address: formData.address,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        reg: formData.reg,
+        vat: formData.vat,
+      }]);
+      if (insertError) throw insertError;
+
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Onboarding error:", err);
+      setError("Failed to complete onboarding. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleBack = () => {
-    if (step > 0) setStep(step - 1);
+  const handleNext = () => {
+    if (step < steps.length - 1) setStep(step + 1);
+    else handleSubmit();
   };
+
+  const handleBack = () => step > 0 && setStep(step - 1);
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-xl flex items-center justify-center z-50 p-4">
@@ -60,7 +110,6 @@ export default function OnboardingWizard({ onClose }: { onClose: () => void }) {
         transition={{ duration: 0.4 }}
         className="w-full max-w-2xl bg-[#0D1B2A] rounded-2xl shadow-2xl p-8 space-y-8 border border-white/10 relative"
       >
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition"
@@ -68,17 +117,13 @@ export default function OnboardingWizard({ onClose }: { onClose: () => void }) {
           <X className="w-5 h-5 text-white" />
         </button>
 
-        {/* Step Title */}
         <h2 className="text-2xl font-bold text-white">{steps[step].title}</h2>
 
-        {/* Fields */}
         {step < steps.length - 1 ? (
           <form className="space-y-6">
             {steps[step].fields.map((field, index) => (
               <div key={index} className="space-y-2">
-                <label htmlFor={field.name} className="text-gray-400 text-sm">
-                  {field.label}
-                </label>
+                <label htmlFor={field.name} className="text-gray-400 text-sm">{field.label}</label>
                 <div className="flex items-center bg-white/5 rounded-full px-4 py-3 focus-within:ring-2 focus-within:ring-teal-400">
                   {field.icon}
                   <input
@@ -99,34 +144,28 @@ export default function OnboardingWizard({ onClose }: { onClose: () => void }) {
           <div className="text-white space-y-4">
             <p className="text-lg font-semibold">Please review your details:</p>
             {Object.entries(formData).map(([key, value]) => (
-              <p key={key} className="capitalize">
-                <span className="text-gray-400">{key.replace(/([A-Z])/g, " $1")}: </span>
-                {value}
-              </p>
+              <p key={key} className="capitalize"><span className="text-gray-400">{key}: </span>{value}</p>
             ))}
           </div>
         )}
 
-        {/* Step Indicator + Navigation */}
+        {error && <p className="text-red-400 text-sm">{error}</p>}
+        {loading && <p className="text-gray-400 text-sm">Submitting...</p>}
+
         <div className="flex justify-between items-center">
           <p className="text-sm text-white">Step {step + 1} of {steps.length}</p>
           <div className="flex gap-4">
             {step > 0 && (
-              <button
-                onClick={handleBack}
-                className="px-6 py-3 rounded-full border border-gray-500 text-gray-300 hover:bg-white/10 transition flex items-center gap-2"
-              >
+              <button onClick={handleBack}
+                className="px-6 py-3 rounded-full border border-gray-500 text-gray-300 hover:bg-white/10 transition flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4" /> Back
               </button>
             )}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
               onClick={handleNext}
-              className="px-6 py-3 rounded-full bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] font-semibold transition"
-            >
-              {step === steps.length - 1 ? "Submit" : "Continue"}
-              <ArrowRight className="w-4 h-4 inline-block ml-2" />
+              disabled={loading}
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] font-semibold transition">
+              {step === steps.length - 1 ? "Submit" : "Continue"} <ArrowRight className="w-4 h-4 inline-block ml-2" />
             </motion.button>
           </div>
         </div>

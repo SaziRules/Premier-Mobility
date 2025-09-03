@@ -5,7 +5,7 @@ import { motion, useAnimation } from "framer-motion";
 
 const stats = [
   { label: "Years of Experience", value: 25 },
-  { label: "In-house Fleet Vehicles", value: 120 },
+  { label: "In-house Fleet Vehicles", value: 250 },
   { label: "Happy Clients Served", value: 500 },
 ];
 

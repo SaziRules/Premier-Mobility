@@ -137,9 +137,9 @@ export default function Footer() {
             {
               title: "Contact",
               links: [
-                { icon: <MapPinIcon className="w-4 h-4" />, text: "123 Premier Logistics Park, Durban, SA" },
-                { icon: <PhoneIcon className="w-4 h-4" />, text: "+27 31 555 1234" },
-                { icon: <EnvelopeIcon className="w-4 h-4" />, text: "info@premiermobility.com" },
+                { icon: <MapPinIcon className="w-4 h-4" />, text: "9 Grix Road, Willowton Industrial, PMB, 3201" },
+                { icon: <PhoneIcon className="w-4 h-4" />, text: "+27 861 002 477" },
+                { icon: <EnvelopeIcon className="w-4 h-4" />, text: "yusuf@premiergrp.co.za" },
               ],
             },
           ].map((section, index) => (

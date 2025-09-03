@@ -1,96 +1,96 @@
 "use client";
 
 import { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/lib/supabaseClient";
 import { motion } from "framer-motion";
-import { Upload } from "lucide-react";
+import { UploadCloud, CheckCircle, XCircle } from "lucide-react";
 
-const documents = [
-  { name: "Directors Identity Document", type: "directors_id" },
-  { name: "Company CK", type: "company_ck" },
-  { name: "VAT Registration", type: "vat_reg" },
-  { name: "TTC", type: "ttc" },
-  { name: "WCM Letter of Good Standing", type: "wcm" },
-  { name: "BBBEE Certificate", type: "bbbee" },
+interface UploadStatus {
+  [key: string]: "idle" | "uploading" | "success" | "error";
+}
+
+const requiredDocuments = [
+  "Directors Identity Document",
+  "Company CK",
+  "VAT Registration",
+  "TTC",
+  "WCM Letter of Good Standing",
+  "BBBEE Certificate",
 ];
 
 export default function DocumentUpload() {
-  const supabase = createClientComponentClient();
-  const [uploading, setUploading] = useState<string | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<Record<string, string>>({});
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>({});
 
-  const handleFileUpload = async (docType: string, file: File) => {
-    if (!file) return;
+  const validateFile = (file: File) => {
+    const maxSizeMB = 5; // Average size limit
+    const allowedTypes = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
+    if (!allowedTypes.includes(file.type)) return "Only PDF, JPEG, JPG, PNG allowed.";
+    if (file.size / 1024 / 1024 > maxSizeMB) return "File size exceeds 5MB.";
+    return null;
+  };
 
-    // Criteria: Only PDF or JPEG and <5MB
-    const validTypes = ["application/pdf", "image/jpeg"];
-    if (!validTypes.includes(file.type)) {
-      alert("Only PDF or JPEG files are allowed");
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      alert("File must be less than 5MB");
+  const handleUpload = async (docName: string, file: File) => {
+    const validationError = validateFile(file);
+    if (validationError) {
+      setUploadStatus((prev) => ({ ...prev, [docName]: "error" }));
+      alert(validationError);
       return;
     }
 
     try {
-      setUploading(docType);
+      setUploadStatus((prev) => ({ ...prev, [docName]: "uploading" }));
 
-      const filePath = `${docType}/${Date.now()}-${file.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from("documents")
-        .upload(filePath, file);
+      // Ensure bucket exists
+      const { data: bucketData, error: bucketError } = await supabase.storage.getBucket("documents");
+      if (!bucketData && bucketError) {
+        const { error: createError } = await supabase.storage.createBucket("documents", {
+          public: false,
+          fileSizeLimit: 5242880,
+        });
+        if (createError) throw createError;
+      }
+
+      const filePath = `${docName.replace(/\s+/g, "_")}/${file.name}`;
+      const { error: uploadError } = await supabase.storage.from("documents").upload(filePath, file, {
+        upsert: true,
+      });
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage.from("documents").getPublicUrl(filePath);
-      const publicUrl = data?.publicUrl || "";
-
-      await supabase.from("documents").insert({
-        user_id: (await supabase.auth.getUser()).data.user?.id,
-        doc_type: docType,
-        url: publicUrl,
-      });
-
-      setUploadedFiles((prev) => ({ ...prev, [docType]: publicUrl }));
-      alert("Upload successful!");
-    } catch (error) {
-      console.error(error);
-      alert("Upload failed!");
-    } finally {
-      setUploading(null);
+      setUploadStatus((prev) => ({ ...prev, [docName]: "success" }));
+    } catch (err: any) {
+      console.error("Upload error:", err.message);
+      setUploadStatus((prev) => ({ ...prev, [docName]: "error" }));
+      alert(`Failed to upload ${docName}: ${err.message}`);
     }
   };
 
   return (
-    <section className="bg-[#0D1B2A] rounded-xl p-6 shadow-lg border border-white/10">
-      <h2 className="text-xl font-bold text-white mb-6">Upload Required Documents</h2>
-      <div className="grid grid-cols-3 gap-6">
-        {documents.map((doc) => (
+    <section className="bg-[#0D1B2A] text-white p-8 border border-gray-800 rounded-xl shadow-xl w-full">
+      <h2 className="text-2xl font-bold mb-6">Upload Required Documents</h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        {requiredDocuments.map((doc) => (
           <motion.label
-            key={doc.type}
-            whileHover={{ scale: 1.05 }}
-            className="cursor-pointer rounded-lg p-6 flex flex-col items-center justify-center bg-white/5 border border-gray-600 hover:border-teal-400 transition relative"
+            key={doc}
+            whileHover={{ scale: 1.03 }}
+            className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-gray-500 rounded-xl cursor-pointer hover:border-teal-400 px-4 transition relative"
           >
-            {uploading === doc.type ? (
-              <span className="text-teal-400 animate-pulse">Uploading...</span>
-            ) : uploadedFiles[doc.type] ? (
-              <span className="text-green-400">Uploaded</span>
-            ) : (
-              <>
-                <Upload className="w-8 h-8 text-teal-400 mb-2" />
-                <p className="text-white text-center text-sm">{doc.name}</p>
-                <p className="text-gray-400 text-xs">Click to upload</p>
-              </>
-            )}
             <input
               type="file"
-              accept=".pdf,.jpg,.jpeg"
               className="hidden"
-              onChange={(e) =>
-                e.target.files?.[0] && handleFileUpload(doc.type, e.target.files[0])
-              }
+              onChange={(e) => e.target.files && handleUpload(doc, e.target.files[0])}
             />
+            {uploadStatus[doc] === "success" ? (
+              <CheckCircle className="w-10 h-10 text-green-400 mb-2" />
+            ) : uploadStatus[doc] === "error" ? (
+              <XCircle className="w-10 h-10 text-red-400 mb-2" />
+            ) : (
+              <UploadCloud className="w-10 h-10 text-teal-400 mb-2" />
+            )}
+            <span className="text-sm text-center">{doc}</span>
+            {uploadStatus[doc] === "uploading" && (
+              <span className="absolute bottom-2 text-xs text-teal-300 animate-pulse">Uploading...</span>
+            )}
           </motion.label>
         ))}
       </div>

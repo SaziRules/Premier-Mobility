@@ -8,15 +8,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Navbar() {
+  const pathname = usePathname(); // ✅ Always run hooks first
   const [isOpen, setIsOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const pathname = usePathname();
 
-  // Hide navbar for dashboard pages
-  if (pathname.startsWith("/dashboard")) {
-    return null;
-  }
+  // Hide navbar for dashboard pages (after hooks run)
+  const isDashboard = pathname?.startsWith("/dashboard");
 
   const links = [
     { name: "Home", href: "/" },
@@ -49,6 +47,9 @@ export default function Navbar() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
+
+  // If dashboard, render nothing but still after hooks executed
+  if (isDashboard) return null;
 
   return (
     <motion.nav
