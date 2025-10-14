@@ -7,7 +7,7 @@ import { Shield, Camera, Fuel, AlertTriangle, BadgeCheck } from "lucide-react";
 const securityMeasures = [
   {
     title: "24/7 Vehicle Monitoring",
-    image: "/hero-fleet-2.png",
+    image: "/vehicle-monitoring.png",
     description:
       "Our National Control Room provides 24-hour real-time monitoring of all fleet vehicles ensuring safety and accountability.",
   },
@@ -19,19 +19,19 @@ const securityMeasures = [
   },
   {
     title: "Vehicle Cameras & Ground Team",
-    image: "/hero-fleet-2.png",
+    image: "/ground-team.png",
     description:
       "Comprehensive camera coverage and a rapid-response ground team provide extra support wherever your fleet travels.",
   },
   {
     title: "Driver Access Control",
-    image: "/service-fleet.png",
+    image: "/driver-access.png",
     description:
       "Secure driver access control systems ensure only authorized personnel handle vehicles and sensitive cargo.",
   },
   {
     title: "Internal Escort Team",
-    image: "/hero-fleet-2.png",
+    image: "/escort.png",
     description:
       "In-house vehicle escort teams provide on-route protection for sensitive or high-value cargo deliveries.",
   },
