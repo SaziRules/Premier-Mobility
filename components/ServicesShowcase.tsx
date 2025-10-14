@@ -6,12 +6,12 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 const services = [
-  { name: "Abnormal Transportation", image: "/fleet/abnormal.jpg" },
-  { name: "Super Links Tautliner", image: "/fleet/superlinks.jpg" },
+  { name: "Abnormal Transportation", image: "/fleet/abnormal.png" },
+  { name: "Super Link Tautliner", image: "/fleet/superlinks.jpg" },
   { name: "Temperature Controlled", image: "/fleet/temperature.jpg" },
   { name: "Box Body & Flat Deck", image: "/fleet/box-body.jpg" },
-  { name: "Tippers", image: "/fleet/tippers.jpg" },
-  { name: "Tankers", image: "/fleet/tankers.jpg" },
+  { name: "Tippers", image: "/fleet/tippers.png" },
+  { name: "Tankers", image: "/fleet/tankers.png" },
   { name: "Passenger Vehicles", image: "/fleet/passenger-vehicle.jpg" },
   { name: "Flat Decks", image: "/fleet/flat-deck.jpg" },
 ];

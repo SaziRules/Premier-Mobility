@@ -119,37 +119,45 @@ export default function SouthernAfricaMap() {
           </div>
         </motion.div>
 
-        {/* Right globe */}
-        <motion.div
-          className="flex-1 flex justify-center relative overflow-visible"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="relative flex items-center justify-center w-full overflow-visible">
-            <div
-              className="
-                w-[95%] 
-                sm:w-[85%] 
-                lg:w-[80%] 
-                aspect-square 
-                min-h-[400px] 
-                sm:min-h-[500px] 
-                lg:min-h-[650px] 
-                overflow-visible 
-                mx-auto
-              "
-            >
-              <Globe
-                markers={allMarkers.map((loc) => ({
-                  location: [loc.lat, loc.lon],
-                  size: loc.size,
-                  label: loc.label,
-                }))}
-              />
-            </div>
-          </div>
-        </motion.div>
+       {/* Right globe */}
+<motion.div
+  className="flex-1 flex justify-center relative overflow-visible"
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.2 }}
+>
+  <div className="relative flex items-center justify-center w-full overflow-visible">
+    {/* Artistic circular frame for the globe */}
+    <div
+      className="
+        relative 
+        aspect-square 
+        w-[90%] sm:w-[80%] lg:w-[90%]
+        min-h-[380px] sm:min-h-[480px] lg:min-h-[600px]
+        rounded-full overflow-hidden
+        bg-[#ffffff]/30
+        mx-auto
+        flex items-center justify-center
+      "
+    >
+      {/* ↓ Add this wrapper so the canvas scales down slightly */}
+      <div className="relative w-[90%] h-[90%] sm:w-[92%] sm:h-[92%] flex items-center justify-center">
+        <div className="w-full h-full scale-[0.96] sm:scale-[0.965] lg:scale-[0.95]">
+          <Globe
+            markers={allMarkers.map((loc) => ({
+              location: [loc.lat, loc.lon],
+              size: loc.size,
+              label: loc.label,
+            }))}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</motion.div>
+
+
+
       </div>
     </section>
   );

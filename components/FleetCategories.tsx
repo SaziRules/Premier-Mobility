@@ -11,13 +11,13 @@ const categories = [
   },
   {
     title: "Tippers",
-    image: "/fleet/tippers.jpg",
+    image: "/fleet/tippers.png",
     description:
       "Heavy-duty trucks equipped with hydraulically operated open-box beds for easy unloading of bulk materials like sand, gravel, or demolition waste.",
   },
   {
     title: "Tankers",
-    image: "/fleet/tankers.jpg",
+    image: "/fleet/tankers.png",
     description:
       "Specialized vehicles built to transport liquids and fuel safely, maintaining product integrity and meeting strict safety standards.",
   },
@@ -35,12 +35,12 @@ const categories = [
   },
   {
     title: "Abnormal Transportation",
-    image: "/fleet/abnormal.jpg",
+    image: "/fleet/abnormal.png",
     description:
       "Specialized transport solutions for oversized and overweight cargo, including machinery and industrial equipment requiring route clearance.",
   },
   {
-    title: "Super Links Tautliner",
+    title: "Super Link Tautliner",
     image: "/fleet/superlinks.jpg",
     description:
       "Curtain-sided articulated trucks ideal for transporting palletized goods, offering fast loading and unloading efficiency.",
