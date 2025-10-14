@@ -1,20 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import DocumentUpload from "@/components/DocumentUpload";
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
 
+// 🔹 Strongly typed interface for Supabase onboarding profiles
 interface UserProfile {
   id: string;
   name: string;
   email: string;
   phone?: string;
   company?: string;
-  [key: string]: any; // if there are unknown extra fields
+  [key: string]: string | number | null | undefined;
 }
-
 
 const REQUIRED_DOCS = [
   "Directors Identity Document.pdf",
@@ -30,7 +30,19 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [missingDocs, setMissingDocs] = useState<string[]>([]);
 
-  const fetchProfile = async () => {
+  // ✅ useCallback ensures useEffect dependency is properly handled
+  const checkDocuments = useCallback(async (userId: string) => {
+    const { data, error } = await supabase.storage.from("documents").list(userId);
+    if (error) {
+      console.error("Error fetching documents", error);
+      return;
+    }
+    const existingDocs = data.map((d) => d.name);
+    const missing = REQUIRED_DOCS.filter((doc) => !existingDocs.includes(doc));
+    setMissingDocs(missing);
+  }, []);
+
+  const fetchProfile = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
@@ -42,25 +54,14 @@ export default function DashboardPage() {
 
     if (!error && data) {
       setProfile(data);
-      await checkDocuments(user.id);  // pass unique id or email as folder reference
+      await checkDocuments(user.id); // use user.id as storage folder
     }
     setLoading(false);
-  };
-
-  const checkDocuments = async (userId: string) => {
-    const { data, error } = await supabase.storage.from("documents").list(userId);
-    if (error) {
-      console.error("Error fetching documents", error);
-      return;
-    }
-    const existingDocs = data.map((d) => d.name);
-    const missing = REQUIRED_DOCS.filter((doc) => !existingDocs.includes(doc));
-    setMissingDocs(missing);
-  };
+  }, [checkDocuments]);
 
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, [fetchProfile]);
 
   if (loading) {
     return (
@@ -124,6 +125,7 @@ export default function DashboardPage() {
               Request Quote
             </button>
           </div>
+
           <div className="bg-[#132437] rounded-2xl shadow-lg p-6 flex flex-col justify-between">
             <h3 className="text-lg font-semibold mb-4">Lease a Vehicle</h3>
             <p className="text-gray-400 mb-6">Lease a fleet vehicle tailored to your business needs.</p>
@@ -131,6 +133,7 @@ export default function DashboardPage() {
               Lease Vehicle
             </button>
           </div>
+
           <div className="bg-[#132437] rounded-2xl shadow-lg p-6 flex flex-col justify-between">
             <h3 className="text-lg font-semibold mb-4">Maintenance & Support</h3>
             <p className="text-gray-400 mb-6">Request maintenance or roadside assistance quickly.</p>
@@ -140,36 +143,30 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Documents + Credit Application */}
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Document Upload Section */}
-        <DocumentUpload />
-          {/* Credit Application Section */}
-        <section className="bg-[#132437] rounded-2xl p-6 shadow-lg space-y-4">
-          <h3 className="text-lg font-semibold mb-4">Credit Application</h3>
-          {missingDocs.length > 0 ? (
-            <>
-              <p className="text-gray-400 mb-4">
-                You have not yet applied for credit. Please upload the following missing documents:
-              </p>
-              <ul className="list-disc pl-5 space-y-1 text-gray-300">
-                {missingDocs.map((doc) => (
-                  <li key={doc}>{doc}</li>
-                ))}
-              </ul>
-              <button className="mt-6 px-6 py-3 rounded-full bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] font-semibold hover:from-green-400 hover:to-teal-400 transition">
-                Apply for Credit
-              </button>
-            </>
-          ) : (
-            <p className="text-green-400">All required documents uploaded. You can now apply for credit.</p>
-          )}
-        </section>
-          
+          <DocumentUpload />
+          <section className="bg-[#132437] rounded-2xl p-6 shadow-lg space-y-4">
+            <h3 className="text-lg font-semibold mb-4">Credit Application</h3>
+            {missingDocs.length > 0 ? (
+              <>
+                <p className="text-gray-400 mb-4">
+                  You have not yet applied for credit. Please upload the following missing documents:
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-gray-300">
+                  {missingDocs.map((doc) => (
+                    <li key={doc}>{doc}</li>
+                  ))}
+                </ul>
+                <button className="mt-6 px-6 py-3 rounded-full bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] font-semibold hover:from-green-400 hover:to-teal-400 transition">
+                  Apply for Credit
+                </button>
+              </>
+            ) : (
+              <p className="text-green-400">All required documents uploaded. You can now apply for credit.</p>
+            )}
+          </section>
         </div>
-
-        
-
-        
 
         {/* Activity */}
         <section className="bg-[#132437] rounded-2xl shadow-lg p-6">
