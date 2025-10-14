@@ -6,6 +6,16 @@ import DocumentUpload from "@/components/DocumentUpload";
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
 
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  [key: string]: any; // if there are unknown extra fields
+}
+
+
 const REQUIRED_DOCS = [
   "Directors Identity Document.pdf",
   "Company CK.pdf",
@@ -16,7 +26,7 @@ const REQUIRED_DOCS = [
 ];
 
 export default function DashboardPage() {
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [missingDocs, setMissingDocs] = useState<string[]>([]);
 

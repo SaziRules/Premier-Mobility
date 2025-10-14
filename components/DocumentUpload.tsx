@@ -58,11 +58,17 @@ export default function DocumentUpload() {
       if (uploadError) throw uploadError;
 
       setUploadStatus((prev) => ({ ...prev, [docName]: "success" }));
-    } catch (err: any) {
-      console.error("Upload error:", err.message);
-      setUploadStatus((prev) => ({ ...prev, [docName]: "error" }));
-      alert(`Failed to upload ${docName}: ${err.message}`);
-    }
+    } catch (err) {
+  if (err instanceof Error) {
+    console.error("Upload error:", err.message);
+    alert(`Failed to upload ${docName}: ${err.message}`);
+  } else {
+    console.error("Unknown upload error:", err);
+    alert(`Failed to upload ${docName}: An unknown error occurred.`);
+  }
+  setUploadStatus((prev) => ({ ...prev, [docName]: "error" }));
+}
+
   };
 
   return (
