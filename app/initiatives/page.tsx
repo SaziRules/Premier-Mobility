@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import InitiativesPrograms from "@/components/InitiativesPrograms";
+
+export const metadata: Metadata = {
+  title: "Our Initiatives | Premier Mobility",
+  description:
+    "Committed to sustainability, women empowerment, graduate programs, and community development across the logistics industry.",
+};
 import UniHero from "@/components/UniHero";
 
 export default function InitiativesPage() {

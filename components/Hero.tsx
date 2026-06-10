@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { Play, X } from "lucide-react";
+import Image from "next/image";
 import OnboardingWizard from "@/components/OnboardingWizard"; // import the wizard
 
 const buttonVariants: Variants = {
@@ -103,10 +104,12 @@ export default function Hero({
 
               {/* Main Image */}
               <div className="relative w-[80%] aspect-square rounded-full overflow-hidden shadow-2xl z-10">
-                <img
+                <Image
                   src="/hero-fleet.png"
                   alt="Premier Mobility Fleet"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  priority
                 />
               </div>
 

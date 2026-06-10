@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Play, Users, GraduationCap, Briefcase, BookOpen } from "lucide-react";
+import Image from "next/image";
 
 const initiatives = [
   {
@@ -56,7 +57,7 @@ export default function InitiativesPrograms() {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
-    <section className="bg-gray-50 py-16 md:py-20">
+    <section id="initiatives-list" className="bg-gray-50 py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 space-y-12">
         {/* Heading */}
         <motion.div
@@ -105,10 +106,11 @@ export default function InitiativesPrograms() {
               <div className="absolute -inset-12 bg-gradient-to-tr from-teal-400/20 to-green-400/20 rounded-full blur-3xl z-0" />
               {/* Thumbnail Image */}
               <div className="relative w-[80%] aspect-square rounded-full overflow-hidden shadow-2xl z-10">
-                <img
+                <Image
                   src="/initiative-thumb.png"
                   alt="Initiatives Video Preview"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
               {/* Play Button */}

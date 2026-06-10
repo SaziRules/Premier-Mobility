@@ -1,20 +1,40 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  MapPinIcon,
-  PhoneIcon,
-  EnvelopeIcon,
-} from "@heroicons/react/24/solid";
 import {
   FaFacebookF,
   FaTwitter,
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa";
-import { Truck, Shield, Clock, Headphones } from "lucide-react";
+import { Truck, Shield, Clock, Headphones, CheckCircle, MapPin, Phone, Mail } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
+
+const socialLinks = [
+  { Icon: FaFacebookF, label: "Facebook" },
+  { Icon: FaTwitter, label: "Twitter" },
+  { Icon: FaLinkedinIn, label: "LinkedIn" },
+  { Icon: FaInstagram, label: "Instagram" },
+];
 
 export default function Footer() {
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterDone, setNewsletterDone] = useState(false);
+  const [newsletterError, setNewsletterError] = useState<string | null>(null);
+
+  const handleNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewsletterError(null);
+    const { error } = await supabase.from("newsletter").insert([{ email: newsletterEmail }]);
+    if (error) {
+      setNewsletterError("Failed to subscribe. Please try again.");
+      return;
+    }
+    setNewsletterDone(true);
+    setNewsletterEmail("");
+  };
+
   return (
     <motion.footer
       className="bg-[#0D1B2A] text-gray-300 pt-16"
@@ -39,16 +59,32 @@ export default function Footer() {
             Be the first to know about fleet updates, special services, and
             exclusive offers.
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row gap-4 sm:gap-0">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="px-4 py-3 w-full sm:w-80 rounded-md sm:rounded-l-md sm:rounded-r-none bg-gray-800 text-gray-100 placeholder-gray-400 outline-none border border-gray-600 focus:border-teal-400"
-            />
-            <button className="px-6 py-3 bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] font-semibold rounded-md sm:rounded-l-none hover:scale-105 transition">
-              Subscribe
-            </button>
-          </div>
+          {newsletterDone ? (
+            <div className="mt-6 flex items-center gap-3 text-green-400">
+              <CheckCircle className="w-5 h-5 flex-shrink-0" />
+              <span>You&apos;re subscribed! Welcome to the Premier Network.</span>
+            </div>
+          ) : (
+            <form onSubmit={handleNewsletter} className="mt-6 flex flex-col sm:flex-row gap-4 sm:gap-0">
+              <input
+                type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="px-4 py-3 w-full sm:w-80 rounded-md sm:rounded-l-md sm:rounded-r-none bg-gray-800 text-gray-100 placeholder-gray-400 outline-none border border-gray-600 focus:border-teal-400"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] font-semibold rounded-md sm:rounded-l-none hover:scale-105 transition"
+              >
+                Subscribe
+              </button>
+              {newsletterError && (
+                <p className="text-red-400 text-sm mt-2 sm:mt-0 sm:ml-4 self-center">{newsletterError}</p>
+              )}
+            </form>
+          )}
         </motion.div>
 
         {/* Features Row */}
@@ -104,12 +140,12 @@ export default function Footer() {
               Africa, backed by technology and a modern fleet.
             </p>
             <div className="flex gap-4 mt-6 mb-8">
-              {[FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram].map((Icon, i) => (
+              {socialLinks.map(({ Icon, label }, i) => (
                 <a
                   key={i}
                   href="#"
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] hover:scale-105 transition"
-                  aria-label="social link"
+                  aria-label={label}
                 >
                   <Icon size={18} />
                 </a>
@@ -137,9 +173,9 @@ export default function Footer() {
             {
               title: "Contact",
               links: [
-                { icon: <MapPinIcon className="w-4 h-4" />, text: "9 Grix Road, Willowton Industrial, PMB, 3201" },
-                { icon: <PhoneIcon className="w-4 h-4" />, text: "+27 861 002 477" },
-                { icon: <EnvelopeIcon className="w-4 h-4" />, text: "yusuf@premiergrp.co.za" },
+                { icon: <MapPin className="w-4 h-4 flex-shrink-0" />, text: "9 Grix Road, Willowton Industrial, PMB, 3201" },
+                { icon: <Phone className="w-4 h-4 flex-shrink-0" />, text: "+27 861 002 477" },
+                { icon: <Mail className="w-4 h-4 flex-shrink-0" />, text: "yusuf@premiergrp.co.za" },
               ],
             },
           ].map((section, index) => (

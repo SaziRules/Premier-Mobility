@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { Shield, Camera, Fuel, AlertTriangle, BadgeCheck } from "lucide-react";
+import Image from "next/image";
 
 const securityMeasures = [
   {
@@ -142,7 +143,9 @@ export default function SecuritySection() {
               }}
               className="flex flex-col bg-white shadow hover:scale-105 transition-transform duration-300 rounded-2xl"
             >
-              <img src={measure.image} alt={measure.title} className="w-full h-48 object-cover rounded-t-2xl" />
+              <div className="relative w-full h-48">
+                <Image src={measure.image} alt={measure.title} fill className="object-cover rounded-t-2xl" />
+              </div>
               <div className="p-4 text-left space-y-2">
                 <h3 className="font-semibold text-lg text-gray-900">{measure.title}</h3>
                 <p className="text-sm text-gray-600">{measure.description}</p>
@@ -170,7 +173,9 @@ export default function SecuritySection() {
                     exit={{ opacity: 0, x: -100 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <img src={measure.image} alt={measure.title} className="w-full h-48 object-cover" />
+                    <div className="relative w-full h-48">
+                      <Image src={measure.image} alt={measure.title} fill className="object-cover" />
+                    </div>
                     <div className="p-4 text-left space-y-2">
                       <h3 className="font-semibold text-lg text-gray-900">{measure.title}</h3>
                       <p className="text-sm text-gray-600">{measure.description}</p>

@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import AboutPromo from "@/components/AboutAppPromo";
+
+export const metadata: Metadata = {
+  title: "About Us | Premier Mobility",
+  description:
+    "With over 25 years of experience, Premier Mobility has grown from a specialized rental business into a fully integrated logistics and transport solutions provider across Southern Africa.",
+};
 import UniHero from "@/components/UniHero";
 import CompanyHistoryAndScope from "@/components/CompanyHistoryAndScope";
 import UnitsAndIndustries from "@/components/UnitsAndIndustries";

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   Truck,
   Package,
@@ -96,7 +97,7 @@ export default function FleetOverview() {
       : fleetData.filter((item) => item.category === activeTab);
 
   return (
-    <section className="bg-white py-20">
+    <section id="fleet-types" className="bg-white py-20">
       <div className="container mx-auto px-6 lg:px-16 space-y-12">
         {/* Heading */}
         <motion.div
@@ -141,7 +142,7 @@ export default function FleetOverview() {
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {filteredFleet.map((fleet, index) => (
               <motion.div
                 key={fleet.title}
@@ -151,11 +152,14 @@ export default function FleetOverview() {
                 className="bg-white rounded-2xl border hover:shadow-xl transition overflow-hidden"
               >
                 {/* Image */}
-                <img
-                  src={fleet.image}
-                  alt={fleet.title}
-                  className="w-full h-68 object-cover"
-                />
+                <div className="relative w-full h-64">
+                  <Image
+                    src={fleet.image}
+                    alt={fleet.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 {/* Content */}
                 <div className="p-6 space-y-3">
                   <h3 className="text-xl font-bold text-gray-800">

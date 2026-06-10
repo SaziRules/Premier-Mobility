@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { X, ArrowRight, ArrowLeft, Building, Phone, User, Mail } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, Building, Phone, User, Mail, Lock } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 
 const steps = [
@@ -20,6 +20,7 @@ const steps = [
       { label: "Full Name", icon: <User className="w-5 h-5 text-teal-400" />, name: "name", type: "text", placeholder: "John Doe" },
       { label: "Phone Number", icon: <Phone className="w-5 h-5 text-teal-400" />, name: "phone", type: "tel", placeholder: "+27 82 123 4567" },
       { label: "Email Address", icon: <Mail className="w-5 h-5 text-teal-400" />, name: "email", type: "email", placeholder: "example@mail.com" },
+      { label: "Password", icon: <Lock className="w-5 h-5 text-teal-400" />, name: "password", type: "password", placeholder: "Min. 8 characters" },
     ],
   },
   {
@@ -47,33 +48,32 @@ export default function OnboardingWizard({ onClose }: { onClose: () => void }) {
   };
 
   const handleSubmit = async () => {
+    if (!formData.password || formData.password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const password = Math.random().toString(36).slice(-12);
-
-      // Try creating account
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
-        password,
+        password: formData.password,
       });
 
-      if (signUpError?.message?.includes("already registered")) {
-        // Sign in if already exists
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password,
-        });
-        if (signInError) {
-          setError("This email is already registered. Please log in manually.");
-          setLoading(false);
-          return;
+      if (signUpError) {
+        if (signUpError.message.includes("already registered")) {
+          setError("This email is already registered. Please sign in instead.");
+        } else {
+          setError(signUpError.message);
         }
+        setLoading(false);
+        return;
       }
 
-      // Insert onboarding record
       const { error: insertError } = await supabase.from("onboarding").insert([{
+        user_id: signUpData.user?.id ?? null,
         company: formData.company,
         address: formData.address,
         name: formData.name,

@@ -1,0 +1,99 @@
+You are performing a FULL TECHNICAL + UI/UX AUDIT on the current codebase for the Premier Mobility website.
+
+CONTEXT:
+- Project is already open in this folder.
+- This is an in-progress production-grade build.
+- DO NOT redesign from scratch.
+- DO NOT break existing functionality.
+- Your job is to ANALYZE, IMPROVE, and COMPLETE.
+
+OBJECTIVES:
+1. Identify what is WORKING correctly
+2. Identify what is BROKEN or partially implemented
+3. Identify what is MISSING for a complete, production-ready site
+4. Improve UI/UX while preserving the current design language and structure
+5. Move the project toward FULL COMPLETION
+
+AUDIT SCOPE:
+
+A. CORE FUNCTIONALITY
+- Routing (Next.js pages/app structure)
+- Navigation (links, menus, mobile nav)
+- Forms (validation, submission, UX)
+- API routes (if any)
+- State management (Zustand/React state)
+- Error handling
+- Loading states
+- Responsiveness (mobile + tablet)
+
+B. UI / UX QUALITY
+- Layout consistency (spacing, alignment, grid usage)
+- Typography hierarchy
+- Visual clarity and contrast
+- Button states (hover, active, disabled)
+- Accessibility basics (labels, aria, focus states)
+- Mobile usability (tap targets, overflow, stacking)
+- Section flow and content hierarchy
+
+C. PERFORMANCE & CODE QUALITY
+- Unused components or dead code
+- Re-renders / inefficient patterns
+- Image optimization (next/image usage)
+- Lazy loading where needed
+- Bundle size risks
+- Console errors / warnings
+
+D. DESIGN SYSTEM CONSISTENCY
+- Tailwind usage consistency
+- Reusable components vs duplicated code
+- Color + spacing system consistency
+- Component standardization opportunities
+
+E. SEO + STRUCTURE BASICS
+- Metadata (title, description)
+- Semantic HTML usage
+- Heading structure (h1–h6)
+- Missing alt tags
+
+OUTPUT FORMAT (VERY IMPORTANT):
+
+1. SUMMARY
+- Overall project health (percentage estimate)
+- What’s solid
+- What needs urgent attention
+
+2. WORKING CORRECTLY
+- Bullet list of stable features/components
+
+3. ISSUES / BUGS
+- Clear list with file references
+- Explain cause + impact
+
+4. MISSING / INCOMPLETE
+- What’s not built or partially done
+
+5. UI/UX IMPROVEMENTS (NON-DESTRUCTIVE)
+- Specific improvements WITHOUT changing core layout
+- Suggest exact Tailwind/class-level fixes where possible
+
+6. PRIORITY ACTION PLAN
+- Step-by-step ordered tasks to reach production-ready state
+- Group into:
+  - Critical (must fix)
+  - Important (should fix)
+  - Polish (nice-to-have)
+
+7. SAFE FIXES (OPTIONAL CODE)
+- Provide small, safe, drop-in improvements only
+- NO large rewrites
+- NO breaking changes
+
+RULES:
+- DO NOT refactor entire architecture
+- DO NOT remove existing sections unless clearly broken
+- DO NOT introduce new frameworks/libraries unless absolutely necessary
+- KEEP EVERYTHING COMPATIBLE WITH CURRENT BUILD
+- PRIORITIZE SAFE, INCREMENTAL IMPROVEMENTS
+
+GOAL:
+Turn this into a clean, production-ready, responsive, high-quality site WITHOUT losing current work or design direction.

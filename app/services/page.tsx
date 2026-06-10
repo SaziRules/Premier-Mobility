@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import FleetCategories from "@/components/FleetCategories";
+
+export const metadata: Metadata = {
+  title: "Our Services | Premier Mobility",
+  description:
+    "Fleet rental, linehaul, cross-border logistics, warehousing, and supply chain solutions across Southern Africa.",
+};
 import SafetySection from "@/components/SafetySection";
 import ServicesOverview from "@/components/ServicesOverview";
 import UniHero from "@/components/UniHero";
