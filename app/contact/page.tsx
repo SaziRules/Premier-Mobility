@@ -77,7 +77,7 @@ export default function ContactPage() {
                 <div className="flex flex-col items-center gap-4 py-6 text-center">
                   <CheckCircle className="w-14 h-14 text-green-500" />
                   <p className="text-lg font-semibold text-gray-800">Request sent!</p>
-                  <p className="text-gray-500 text-sm">We'll call you back shortly.</p>
+                  <p className="text-gray-500 text-sm">We&apos;ll call you back shortly.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">

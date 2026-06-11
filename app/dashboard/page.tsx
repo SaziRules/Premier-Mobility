@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import DocumentUpload, { REQUIRED_DOCS, DocRecord } from "@/components/DocumentUpload";
 import { supabase } from "@/lib/supabaseClient";
@@ -201,12 +202,12 @@ export default function DashboardPage() {
                 <p>Profile incomplete</p>
               </div>
               <p className="text-gray-500 text-xs">Complete onboarding to unlock all features.</p>
-              <a
+              <Link
                 href="/#onboarding"
                 className="block text-center text-xs px-4 py-2 rounded-full bg-gradient-to-r from-teal-400 to-green-400 text-[#0D1B2A] font-bold"
               >
                 Start Onboarding
-              </a>
+              </Link>
             </div>
           )}
           <button

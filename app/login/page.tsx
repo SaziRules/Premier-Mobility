@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
@@ -217,9 +218,9 @@ export default function LoginPage() {
         {mode === "signin" && (
           <p className="text-center text-gray-600 text-xs">
             New client?{" "}
-            <a href="/#onboarding" className="text-teal-400 hover:underline">
+            <Link href="/#onboarding" className="text-teal-400 hover:underline">
               Apply to onboard
-            </a>
+            </Link>
           </p>
         )}
       </motion.div>
