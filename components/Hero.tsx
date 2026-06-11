@@ -27,7 +27,7 @@ export default function Hero({
 
   return (
     <>
-      <section className="relative bg-[#0D1B2A] text-white overflow-hidden min-h-screen flex items-center z-0">
+      <section className="relative bg-[#0D1B2A] text-white overflow-hidden min-h-screen flex items-center z-0 pt-28 lg:pt-0">
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0D1B2A] via-[#0d1b2a]/70 to-[#1A2A3A] opacity-90" />
 
