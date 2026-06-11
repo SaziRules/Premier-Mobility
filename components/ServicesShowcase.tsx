@@ -77,6 +77,7 @@ export default function ServicesShowcase() {
                       src={service.image}
                       alt={service.name}
                       fill
+                      sizes="260px"
                       className="object-cover"
                     />
                   </div>

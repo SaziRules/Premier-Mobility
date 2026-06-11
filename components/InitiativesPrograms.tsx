@@ -110,6 +110,7 @@ export default function InitiativesPrograms() {
                   src="/initiative-thumb.png"
                   alt="Initiatives Video Preview"
                   fill
+                  sizes="(max-width: 1024px) 80vw, 40vw"
                   className="object-cover"
                 />
               </div>

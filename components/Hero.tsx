@@ -108,6 +108,7 @@ export default function Hero({
                   src="/hero-fleet.png"
                   alt="Premier Mobility Fleet"
                   fill
+                  sizes="(max-width: 1024px) 80vw, 40vw"
                   className="object-cover"
                   priority
                 />

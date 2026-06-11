@@ -144,7 +144,7 @@ export default function SecuritySection() {
               className="flex flex-col bg-white shadow hover:scale-105 transition-transform duration-300 rounded-2xl"
             >
               <div className="relative w-full h-48">
-                <Image src={measure.image} alt={measure.title} fill className="object-cover rounded-t-2xl" />
+                <Image src={measure.image} alt={measure.title} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover rounded-t-2xl" />
               </div>
               <div className="p-4 text-left space-y-2">
                 <h3 className="font-semibold text-lg text-gray-900">{measure.title}</h3>
@@ -174,7 +174,7 @@ export default function SecuritySection() {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="relative w-full h-48">
-                      <Image src={measure.image} alt={measure.title} fill className="object-cover" />
+                      <Image src={measure.image} alt={measure.title} fill sizes="100vw" className="object-cover" />
                     </div>
                     <div className="p-4 text-left space-y-2">
                       <h3 className="font-semibold text-lg text-gray-900">{measure.title}</h3>
